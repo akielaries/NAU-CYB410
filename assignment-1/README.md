@@ -1,5 +1,5 @@
 When messing with malware on your machine I figured I would either want to run it in a VM
-or make sure none of thge prerequisites are enabled on the machine itself. This is where
+or make sure none of the prerequisites are enabled on the machine itself. This is where
 malware written in C or C++ thrive as languages like Python and Java need the runtime and
 interpreter already installed to meet that prerequisite. For this assignment I decided to take
 a look at the Zeus trojan malware pkg that initially gaining traction in the late 2000s when used

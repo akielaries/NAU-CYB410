@@ -45,11 +45,15 @@ int getegid(){
 The bot has went thru many stages and versions with earlier versions 
 of the bug had executable files hardcoded to one of these files
 ```
-ntos.exe, oembios.exe, twext.exe
+ntos.exe
+oembios.exe
+twext.exe
 ```
 date being stored in the folowing dirs 
 ```
-System>\wsnpoem, System>\sysproc64, System>\twain_32
+System>\wsnpoem 
+System>\sysproc64
+System>\twain_32
 ```
 the next iteration and stored files in a single directory later found 
 by security researchers, with another version storing executables in 
@@ -68,10 +72,18 @@ embedded into the built .exe.
 - Configuration
 Seperate from the build stage, contains the address to where the sniffed data
 is sent to in a series of blocks enables customization and hardcoding settings
-into the final binary
-
-
-
+into the final binary. The config includes these sections: 
+```
+StaticConfig 
+DynamicConfig
+KeyLogger
+WebFilters
+WebDataFilters
+WebFakes
+```
+Static and Dynamic Config both are dealing with the hardcoding of settings
+that eventually get executed at runtime. Here the questions of what is the
+target and destination get answered. In addition to the 
 
 Example of the config.txt file used to initate
 seen here: https://github.com/touyachrist/evo-zeus/blob/master/output/builder/config.txt

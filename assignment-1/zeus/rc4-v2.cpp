@@ -16,6 +16,9 @@ int rc4_decrypt(unsigned char *in, unsigned long size,
         rc4_byte = S[(temp + S[j]) & 255];
         out[dataCount] = in[dataCount] ^ rc4_byte;
     }
+    for (m = (decSize-1); m >0; m--) {
+        decData[m] = decData[m]^ decData[m-1];
+    }
     return dataCount;
 } 
 

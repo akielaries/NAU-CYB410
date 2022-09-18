@@ -154,6 +154,9 @@ y_coordinate, SRCCOPY);
 Lets also take a look at the differences in a small implementation 
 of the RC4 stream cipher in a early and more recent version
 
+The difference being the second implementation is encrypting the 
+config file a 0x100 byte key at build time. An extra layer scen in v2
+adds more complexity by implementing a XOR decryption (last code block)
 ```
 /*
  * Example of config file encryption seen in v1
@@ -178,6 +181,35 @@ char b;
 
 ```
 
+```
+/*
+ * A look at v1.x encryption on config files
+ */
+
+int rc4_decrypt(unsigned char *in, unsigned long size, 
+    unsigned char *S, unsigned char *out) {
+    int i, j, dataCount;
+    i = j = dataCount = 0;
+    unsigned char temp, rc4_byte;
+    for (dataCount = 0; dataCount < size; dataCount++) {
+        i = (i + 1) & 255;
+        j = (j + S[i]) & 255;
+        temp = S[j];
+        S[j] = S[i];
+        S[i] = temp;
+        rc4_byte = S[(temp + S[j]) & 255];
+        out[dataCount] = in[dataCount] ^ rc4_byte;
+    }   
+    return dataCount;
+} 
+
+```
+```
+for (m = (decSize-1); m >0; m--) {
+    decData[m] = decData[m]^ decData[m-1];
+    }
+```
+
 The biggest reason for Zeus to come about and still infect systems today
 is due to finding exploits within systems. Potential reasons for allowing
 something like this happen can vary, when developing code especially for
@@ -188,5 +220,6 @@ is no easy chore and requires some detialed knowledge of some complex topics
 like number theory and perhaps abstract and more theoretical facets of math. 
 Implementing fixes for popular bugs is difficult especially in the case of
 something that gets replicated and reproduced in a new variation of the 
-previous version. It is a constant cycle as a security engineer. 
+previous version. It is a constant cycle as a security engineer to stay ahead
+of exploiters while they stay ahead of you.
 

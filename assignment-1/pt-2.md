@@ -83,11 +83,20 @@ WebFakes
 ```
 Static and Dynamic Config both are dealing with the hardcoding of settings
 that eventually get executed at runtime. Here the questions of what is the
-target and destination get answered. In addition to the 
+target and destination get answered. In addition to the hardcoding of 
+generic settings, dynamic features that imply additional comlexity can be scene 
+like redirection URLs of targets and destination addresses, URL masks, log
+disabling, sets of URLs performing Transaction Authenticaion Number (TAN)
+harvesting, as well as URL maks that contain corresponding HTML blocks 
+injecting into webpages who match the Webinjects requests. The bot is
+responsible for running queries 
+
 
 Example of the config.txt file used to initate
 seen here: https://github.com/touyachrist/evo-zeus/blob/master/output/builder/config.txt
 
+Example of webinjects.txt file used to targeting:
+https://github.com/touyachrist/evo-zeus/blob/master/source/other/webinjects.txt
 
 
 

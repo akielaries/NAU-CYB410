@@ -3,6 +3,7 @@ repo containing the Zeus source code this block minimally shows
 the entry point to the windows core API was created and giving 
 root permission
 
+```
 void WINAPI entryPoint(void)
 {
   Mem::init();
@@ -19,12 +20,13 @@ void WINAPI entryPoint(void)
   
   CWA(kernel32, ExitProcess)(coreData.exitCode);
 }
-
+```
 
 A similar version of this code I ran on my machine running linux, 
 was able to give me root permissions as a regular user. 
 See here (maybe it works for you):
 
+```
 int getuid(){
     return 0;
 }
@@ -37,5 +39,7 @@ int getgid(){
 int getegid(){
     return 0;
 }
+
+```
 
 

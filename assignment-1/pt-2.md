@@ -84,8 +84,8 @@ WebFakes
 Static and Dynamic Config both are dealing with the hardcoding of settings
 that eventually get executed at runtime. Here the questions of what is the
 target and destination get answered. In addition to the hardcoding of 
-generic settings, dynamic features that imply additional comlexity can be scene 
-like redirection URLs of targets and destination addresses, URL masks, log
+generic settings, dynamic features that imply additional comlexity such as 
+redirection URLs of targets and destination addresses, URL masks, log
 disabling, sets of URLs performing Transaction Authenticaion Number (TAN)
 harvesting, as well as URL maks that contain corresponding HTML blocks 
 injecting into webpages who match the Webinjects requests. The bot is
@@ -93,12 +93,100 @@ responsible for running queries
 
 
 Example of the config.txt file used to initate
-seen here: https://github.com/touyachrist/evo-zeus/blob/master/output/builder/config.txt
+seen here: 
+https://github.com/touyachrist/evo-zeus/blob/master/output/builder/config.txt
 
 Example of webinjects.txt file used to targeting:
 https://github.com/touyachrist/evo-zeus/blob/master/source/other/webinjects.txt
 
+- Execution
+The final executable file produced from build and configure 
+(sounds like installing a C application) is finally deployed by the "owner"
+of the bug. If the .exe is produced with the same cofiguration and build
+settings the end results will usually vary in where the config file is stored.
+
+- Server
+Finally the bot is deployed on a php-based server utilized by an abundance
+of php scripts that allows the deployer to monitor their results! This also
+serves as a sort of remote access type application where CMDs can be issued
+using this stage. 
+
+- Why wasn't it detected?
+From its initial release, the bot itself was made more complex and harder to
+detect for a number a reasons. What made things tricky was random naming
+of files to specific directories and in small sizes. Using checksums is 
+monitoring bits transmitted at a higher rate than normal, letting professionals
+know of some potential issues. In earlier stages the bug transmitted files 
+carelessly and copied them into the system dir. Later versions made use of
+ensuring dropped files were not to have the same checksum as the orignal. 
 
 
+The general function of the bug is to continuously spawn threads based on
+previous ones that go around crawling the infected devices hard drive. Doing
+so by embedding itself into system directories. 
 
+Here we can see in assembly code how finding new executables to download
+content. The config file is written into our registers and that same thread
+it is executed in will attempt to scrape for new .exe files for config to 
+point to. 
+
+Here is an example of how the keylogging and screens scraping takes place
+by importing a hook to the API 
+```
+user32!TranslateMessage
+``` 
+If the a left click is detected, a global flag is set within another PAI hook 
+and another check is conducted to check if the user is visiting a location
+specified in the config file. Screen captures are then only taken when
+visiting what is specified by the creator. This uses win32 functions
+that can also be seen here: 
+https://github.com/touyachrist/evo-zeus/blob/master/source/client/screenshot.cpp
+
+```
+HDC hDC = CreateCompatibleDC(0);
+HBITMAP hBmp = CreateCompatibleBitmap(GetDC(0), screen_width,
+screen_height);
+SelectObject(hDC, hBmp);
+BitBlt(hDC, 0, 0, screen_width, screen_height, x_coordinate,
+y_coordinate, SRCCOPY); 
+```
+
+Lets also take a look at the differences in a small implementation 
+of the RC4 stream cipher in a early and more recent version
+
+```
+/*
+ * Example of config file encryption seen in v1
+ */
+
+dataSize = size of data
+dataIn = encrypted data
+char b;
+    for (i = 0; i < dataSize; i++) {
+        dataOut[i] = 0;
+    }
+    for (i = 0; i < dataSize; i++) {
+        b = dataIn[i];
+        if ((i % 2) == 0) {
+            b += 2 * i + 10;
+        }
+        else {
+            b += 0xF9 - 2 * i;
+        }
+        dataOut[i] += b;
+    }
+
+```
+
+The biggest reason for Zeus to come about and still infect systems today
+is due to finding exploits within systems. Potential reasons for allowing
+something like this happen can vary, when developing code especially for
+such large and complex systems, it can be hard to think of all possible
+test cases. Such as bugs, vulnerabilities, etc. The bug exploits the use of
+the now insecure stream sipher RC4. Patching crypotgraphic vulnerabilities
+is no easy chore and requires some detialed knowledge of some complex topics
+like number theory and perhaps abstract and more theoretical facets of math. 
+Implementing fixes for popular bugs is difficult especially in the case of
+something that gets replicated and reproduced in a new variation of the 
+previous version. It is a constant cycle as a security engineer. 
 

@@ -37,9 +37,21 @@ KEY = int
 STRING = too
 HASH = 28BEF0
 ```
-
 Produces different hash based on case-type
+### Static Analysis
+```
+clang --analyze rc4-v0.c
+rc4-v0.c:72:33: warning: Result of 'malloc' is converted to a pointer 
+of type 'unsigned char', which is incompatible with sizeof operand type
+int' [unix.MallocSizeof]
+    unsigned char *ciphertext = malloc(sizeof(int) * strlen(argv[2]));
+    ~~~~~~~~~~~~~~~             ^~~~~~ ~~~~~~~~~~~
 
+rc4-v0.c:79:12: warning: Potential leak of memory pointed to by
+'ciphertext' [unix.Malloc]
+    return 0;
+           ^
+```
 
 ## rc4_XOR-SWAP.c
 This version uses the logic operator XOR to swap our elements
@@ -91,4 +103,6 @@ KEY = Key
 STRING = Plaintext
 HASH = BBF316E8D940AF0AD3
 ```
+
+
 

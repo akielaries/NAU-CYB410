@@ -52,4 +52,5 @@ Produces different hash based on case-type
 ```
 We can verify out hash results using the test vectors see 
 [here](https://en.wikipedia.org/wiki/RC4#Test_vectors)
+https://en.wikipedia.org/wiki/RC4#Test_vectors
 

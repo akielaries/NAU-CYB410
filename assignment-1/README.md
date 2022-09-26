@@ -241,9 +241,11 @@ char method)
 We will take a look at how the cipher is implemented for small 
 scale use (passing in a key, string, expecting a returned hash).
 The analysis on this isn't very exciting and was not implemented by
-the attackers but exploited. The errors in the RC4 algorithms are
-beyond what I beleive will be caught by a static analysis tool like
-CLang. 
+the attackers but exploited by them. The errors in the RC4 algorithms 
+are beyond what I beleive will be caught by a static analysis tool like 
+CLang. Running the windows-based bug on my linux machine was troublesome
+with CLange so I had decided to look at a more broad issues that contributed
+to the bug. 
 
 So we will be looking at a minimal reproducable problem for catching 
 bank statements from the system.
@@ -290,7 +292,7 @@ HASH = 28BEF0
 Produces different hash based on case-type
 
 **Static Analysis**
-```
+```c
 clang --analyze rc4-v0.c
 rc4-v0.c:72:33: warning: Result of 'malloc' is converted to a pointer
 of type 'unsigned char', which is incompatible with sizeof operand type
@@ -333,11 +335,12 @@ HASH = \x56 \x89 \x0d \x9f \x31 \xc0 \x49 \x1e
 ```
 
 **Static Analysis**
-```
+```c
 rc4_XOR-SWAP.c:73:24: warning: Result of 'malloc' is converted to a pointer 
 of type 'unsigned char', which is incompatible with sizeof operand type 
 'int' [unix.MallocSizeof]
-      (unsigned char *)malloc(sizeof(int) * strlen(argv[2]));
+    (unsigned char *)malloc(sizeof(int) * strlen(argv[2]));
+                     ^~~~~~ ~~~~~~~~~~~
 ```
 We get the same issue as above when using malloc with pointer types of char
 and malloc taking in int. 
@@ -345,7 +348,7 @@ and malloc taking in int.
 #### rc4_XOR-SWAP-ASCII.c
 This program runs the RC4 algorithm and converts it back to
 its original plaintext. Encoder and Decoder
-```bash
+```
 $ ./XOR-SWAP-ASCII Key Plaintext
 \xbb\xf3\x16\xe8\xd9\x40\xaf\x0a\xd3
 encoded:�3V(@�J
@@ -358,7 +361,33 @@ HASH = \xbb\xf3\x16\xe8\xd9\x40\xaf\x0a\xd3
 
 ```
 
+**Static Analysis**
+```c
+rc4_XOR-SWAP-ASCII.c:72:24: warning: Result of 'malloc' is converted to a pointer 
+of type 'char', which is incompatible with sizeof operand type 'int' [unix.MallocSizeof]
+    char *tempstring = malloc(sizeof(int) * len);
+    ~~~~~~             ^~~~~~ ~~~~~~~~~~~
 
+rc4_XOR-SWAP-ASCII.c:74:9: warning: 2nd function call argument is an uninitialized 
+value [core.CallAndMessage]
+        hext_to_ascii(tempstring,hex_encoded[i]);
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+rc4_XOR-SWAP-ASCII.c:96:21: warning: Result of 'malloc' is converted to a pointer 
+of type 'char', which is incompatible with sizeof operand type 'int' [unix.MallocSizeof]
+    char *dump_to = malloc(sizeof(int) * strlen(argv[2]));
+    ~~~~~~          ^~~~~~ ~~~~~~~~~~~
+
+rc4_XOR-SWAP-ASCII.c:98:33: warning: Result of 'malloc' is converted to a pointer 
+of type 'unsigned char', which is incompatible with sizeof operand type 'int' [unix.MallocSizeof]
+    unsigned char *ciphertext = malloc(sizeof(int) * strlen(argv[2]));
+    ~~~~~~~~~~~~~~~             ^~~~~~ ~~~~~~~~~~~
+```
+This program was a bit more interesting but of course is not the standard RC4 
+algorithm and features some functionality to convert or hash back to its 
+original plaintext value passed in. Here we can see some of the same issues as
+our previous programs implementing the stream cipher plus one more issue with
+a call argument being an uninitialized value.
 
 We can verify out hash results using the test vectors see
 here: https://en.wikipedia.org/wiki/RC4#Test_vectors

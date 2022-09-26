@@ -232,6 +232,17 @@ for (m = (decSize-1); m >0; m--) {
 ```
 
 # Further Look at RC4 Encryption + Static Analysis w/ CLang
+The RC4 Stream Cipher was an encryption algorithm used in many
+Windows systems for a variety of applications. The Zeus bot 
+exploited this algorithm and went under a series of patches
+(for example using logical operator XOR to swap instead of int/
+char method)
+
+We will take a look at how the cipher is implemented for small 
+scale use (passing in a key, string, expecting a returned hash).
+The analysis on this isn't very exciting and was not implemented by
+the attackers but exploited. So we will be looking at a minimal 
+reproducable problem for catching bank statements from the system.
 
 #### rc4-v0.c
 

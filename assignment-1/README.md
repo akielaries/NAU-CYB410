@@ -163,7 +163,7 @@ visiting what is specified by the creator. This uses win32 functions
 that can also be seen here: 
 https://github.com/touyachrist/evo-zeus/blob/master/source/client/screenshot.cpp
 
-```
+```cpp
 HDC hDC = CreateCompatibleDC(0);
 HBITMAP hBmp = CreateCompatibleBitmap(GetDC(0), screen_width,
 screen_height);
@@ -303,11 +303,15 @@ rc4-v0.c:79:12: warning: Potential leak of memory pointed to by
     return 0;
            ^
 ```
-When running 
+When running clang --analyze on the file it warns us of our usage of malloc 
+specifically with using char pointer types with malloc which takes type int
+as a paramater. We also get warned of our return value and a potential memory 
+leak returning 0.
 
 #### rc4_XOR-SWAP.c
 This version uses the logic operator XOR to swap our elements
 instead of previous implementation with ints and chars
+
 ITER 1 :
 ```
 $ ./XOR-SWAP Key Plaintext
@@ -330,13 +334,18 @@ HASH = \x56 \x89 \x0d \x9f \x31 \xc0 \x49 \x1e
 
 **Static Analysis**
 ```
-
+rc4_XOR-SWAP.c:73:24: warning: Result of 'malloc' is converted to a pointer 
+of type 'unsigned char', which is incompatible with sizeof operand type 
+'int' [unix.MallocSizeof]
+      (unsigned char *)malloc(sizeof(int) * strlen(argv[2]));
 ```
+We get the same issue as above when using malloc with pointer types of char
+and malloc taking in int. 
 
 #### rc4_XOR-SWAP-ASCII.c
 This program runs the RC4 algorithm and converts it back to
 its original plaintext. Encoder and Decoder
-```
+```bash
 $ ./XOR-SWAP-ASCII Key Plaintext
 \xbb\xf3\x16\xe8\xd9\x40\xaf\x0a\xd3
 encoded:�3V(@�J
@@ -348,6 +357,9 @@ STRING = Plaintext
 HASH = \xbb\xf3\x16\xe8\xd9\x40\xaf\x0a\xd3
 
 ```
+
+
+
 We can verify out hash results using the test vectors see
 here: https://en.wikipedia.org/wiki/RC4#Test_vectors
 
@@ -374,4 +386,6 @@ Implementing fixes for popular bugs is difficult especially in the case of
 something that gets replicated and reproduced in a new variation of the 
 previous version. It is a constant cycle as a security engineer to stay ahead
 of exploiters while they stay ahead of you.
+
+
 

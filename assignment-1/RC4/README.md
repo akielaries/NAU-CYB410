@@ -38,6 +38,7 @@ STRING = too
 HASH = 28BEF0
 ```
 Produces different hash based on case-type
+
 ### Static Analysis
 ```
 clang --analyze rc4-v0.c

@@ -43,8 +43,8 @@ void WINAPI entryPoint(void) {
 }
 ```
 
-A similar version of this code I ran on my machine running linux, 
-was able to give me root permissions as a regular user. 
+A similar version of this code I ran on my machine running kali 
+linux, was able to give me root permissions as a regular user. 
 See here (maybe it works for you):
 
 ```

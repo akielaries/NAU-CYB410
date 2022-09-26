@@ -14,6 +14,8 @@ are both violated while availability remains in questions. Patches to the malwar
 cybersecurity consultants is known to eradicate it from the infected machine, however strains of the virus
 were spawned remaining a constant battle.
 
+![Zeus Classification](https://github.com/akielaries/CYB410-secure-software/blob/main/imgs/ZEUS_CLASSIFICATION.png)
+
 I was able to find several versions of the "leaked" banking trojan but check out the version I had found from here!
 
 https://github.com/touyachrist/evo-zeus
@@ -24,8 +26,7 @@ the entry point to the windows core API was created and giving
 root permission
 
 ```
-void WINAPI entryPoint(void)
-{
+void WINAPI entryPoint(void) {
   Mem::init();
   Console::init();  
   Crypt::init();
@@ -229,6 +230,8 @@ for (m = (decSize-1); m >0; m--) {
     decData[m] = decData[m]^ decData[m-1];
     }
 ```
+
+# Further Look at RC4 Encryption
 
 The biggest reason for Zeus to come about and still infect systems today
 is due to finding exploits within systems. Potential reasons for allowing

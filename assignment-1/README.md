@@ -389,6 +389,18 @@ original plaintext value passed in. Here we can see some of the same issues as
 our previous programs implementing the stream cipher plus one more issue with
 a call argument being an uninitialized value.
 
+When running cppcheck on the above files, interesting enough it did not return any 
+errors.
+
+```
+$ ls
+bins  err.txt  rc4-v0.c  rc4_XOR-SWAP-ASCII.c  rc4_XOR-SWAP.c  README.md
+$ cppcheck --enable=all --suppress=missingIncludeSystem rc4_XOR-SWAP-ASCII.c 2>err.txt
+Checking rc4_XOR-SWAP-ASCII.c ...
+$ cat err.txt
+$ 
+```
+
 We can verify out hash results using the test vectors see
 here: https://en.wikipedia.org/wiki/RC4#Test_vectors
 

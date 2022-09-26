@@ -232,7 +232,8 @@ for (m = (decSize-1); m >0; m--) {
 ```
 
 # Further Look at RC4 Encryption + Static Analysis w/ CLang
-## rc4-v0.c
+
+#### rc4-v0.c
 
 ITER 1 :
 ```
@@ -273,7 +274,7 @@ HASH = 28BEF0
 ```
 Produces different hash based on case-type
 
-### Static Analysis
+**Static Analysis**
 ```
 clang --analyze rc4-v0.c
 rc4-v0.c:72:33: warning: Result of 'malloc' is converted to a pointer
@@ -288,7 +289,7 @@ rc4-v0.c:79:12: warning: Potential leak of memory pointed to by
            ^
 ```
 
-## rc4_XOR-SWAP.c
+#### rc4_XOR-SWAP.c
 This version uses the logic operator XOR to swap our elements
 instead of previous implementation with ints and chars
 ITER 1 :
@@ -311,7 +312,7 @@ STRING = password
 HASH = \x56 \x89 \x0d \x9f \x31 \xc0 \x49 \x1e
 ```
 
-## rc4_XOR-SWAP-ASCII.c
+#### rc4_XOR-SWAP-ASCII.c
 This program runs the RC4 algorithm and converts it back to
 its original plaintext. Encoder and Decoder
 ```

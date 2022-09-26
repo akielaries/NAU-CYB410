@@ -25,7 +25,7 @@ repo containing the Zeus source code this block minimally shows
 the entry point to the windows core API was created and giving 
 root permission
 
-```
+```cpp
 void WINAPI entryPoint(void) {
   Mem::init();
   Console::init();  
@@ -47,7 +47,7 @@ A similar version of this code I ran on my machine running kali
 linux, was able to give me root permissions as a regular user. 
 See here (maybe it works for you):
 
-```
+```c
 int getuid(){
     return 0;
 }
@@ -202,7 +202,7 @@ char b;
 
 ```
 
-```
+```c
 /*
  * A look at v1.x encryption on config files
  */
@@ -225,7 +225,7 @@ int rc4_decrypt(unsigned char *in, unsigned long size,
 } 
 
 ```
-```
+```c
 for (m = (decSize-1); m >0; m--) {
     decData[m] = decData[m]^ decData[m-1];
     }

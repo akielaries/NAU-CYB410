@@ -178,7 +178,7 @@ of the RC4 stream cipher in a early and more recent version
 The difference being the second implementation is encrypting the 
 config file a 0x100 byte key at build time. An extra layer scen in v2
 adds more complexity by implementing a XOR decryption (last code block)
-```
+```c
 /*
  * Example of config file encryption seen in v1
  */
@@ -241,8 +241,12 @@ char method)
 We will take a look at how the cipher is implemented for small 
 scale use (passing in a key, string, expecting a returned hash).
 The analysis on this isn't very exciting and was not implemented by
-the attackers but exploited. So we will be looking at a minimal 
-reproducable problem for catching bank statements from the system.
+the attackers but exploited. The errors in the RC4 algorithms are
+beyond what I beleive will be caught by a static analysis tool like
+CLang. 
+
+So we will be looking at a minimal reproducable problem for catching 
+bank statements from the system.
 
 #### rc4-v0.c
 
@@ -299,6 +303,7 @@ rc4-v0.c:79:12: warning: Potential leak of memory pointed to by
     return 0;
            ^
 ```
+When running 
 
 #### rc4_XOR-SWAP.c
 This version uses the logic operator XOR to swap our elements
@@ -323,6 +328,11 @@ STRING = password
 HASH = \x56 \x89 \x0d \x9f \x31 \xc0 \x49 \x1e
 ```
 
+**Static Analysis**
+```
+
+```
+
 #### rc4_XOR-SWAP-ASCII.c
 This program runs the RC4 algorithm and converts it back to
 its original plaintext. Encoder and Decoder
@@ -339,8 +349,7 @@ HASH = \xbb\xf3\x16\xe8\xd9\x40\xaf\x0a\xd3
 
 ```
 We can verify out hash results using the test vectors see
-[here](https://en.wikipedia.org/wiki/RC4#Test_vectors)
-https://en.wikipedia.org/wiki/RC4#Test_vectors
+here: https://en.wikipedia.org/wiki/RC4#Test_vectors
 
 ```
 $ ./rc4-v0 Key Plaintext

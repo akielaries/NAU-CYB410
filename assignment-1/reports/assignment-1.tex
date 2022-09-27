@@ -278,9 +278,10 @@ beleive will be caught by a static analysis tool like CLang. Running the
 windows-based bug on my linux machine was troublesome with CLange so I
 had decided to look at a more broad issues that contributed to the bug.
 So we will be looking at a minimal reproducable problem for catching
-bank statements from the system.
+bank statements from the system. \\
 
 \noindent \textbf{rc4-v0.c}\\
+\\
 \noindent ITER 1 :
 
 \begin{verbatim}
@@ -321,7 +322,7 @@ STRING = too
 HASH = 28BEF0
 \end{verbatim}
 
-\noindent Produces different hash based on case-type
+\noindent Produces different hash based on case-type \\
 
 \noindent \textbf{Static Analysis}
 
@@ -339,10 +340,135 @@ rc4-v0.c:79:12: warning: Potential leak of memory pointed to by
            ^
 \end{verbatim}
 
+When running clang --analyze on the file it warns us of our usage of
+malloc specifically with using char pointer types with malloc which
+takes type int as a paramater. We also get warned of our return value
+and a potential memory leak returning 0. \\
 
+\noindent \textbf{rc4\_XOR-SWAP.c}\\
+This version uses the logic operator XOR to swap our elements instead of
+previous implementation with ints and chars. \\
 
+\noindent ITER 1 :
 
+\begin{verbatim}
+$ ./XOR-SWAP Key Plaintext
+\xbb \xf3 \x16 \xe8 \xd9 \x40 \xaf \x0a \xd3
+KEY = Key
+STRING = Plaintext
+HASH = \xbb \xf3 \x16 \xe8 \xd9 \x40 \xaf \x0a \xd3
+\end{verbatim}
 
+\noindent ITER 2:
+
+\begin{verbatim}
+$ ./XOR-SWAP 1088 password
+\x56 \x89 \x0d \x9f \x31 \xc0 \x49 \x1e %
+KEY = 1088
+STRING = password
+HASH = \x56 \x89 \x0d \x9f \x31 \xc0 \x49 \x1e
+\end{verbatim}
+
+\textbf{Static Analysis}
+\begin{verbatim}
+$ clang rc4_XOR-SWAP.c
+rc4_XOR-SWAP.c:73:24: warning: Result of 'malloc' is converted to a pointer 
+of type 'unsigned char', which is incompatible with sizeof operand type 
+'int' [unix.MallocSizeof]
+    (unsigned char *)malloc(sizeof(int) * strlen(argv[2]));
+                     ^~~~~~ ~~~~~~~~~~~
+\end{verbatim}
+\noindent We get the same issue as above when using malloc with pointer types of 
+char and malloc taking in int. \\
+
+\noindent \textbf{rc4\_XOR-SWAP-ASCII.c}\\
+
+\noindent This program runs the RC4 algorithm and converts it back to its original
+plaintext. Encoder and Decoder 
+
+\begin{verbatim}
+$ ./XOR-SWAP-ASCII Key Plaintext
+\xbb\xf3\x16\xe8\xd9\x40\xaf\x0a\xd3
+encoded:?3V(@?J
+\x50\x6c\x61\x69\x6e\x74\x65\x78\x74
+decoded:Plaintext
+KEY = Key
+STRING = Plaintext
+HASH = \xbb\xf3\x16\xe8\xd9\x40\xaf\x0a\xd3
+\end{verbatim}
+
+\noindent \textbf{Static Analysis}
+
+\begin{verbatim}
+rc4_XOR-SWAP-ASCII.c:72:24: warning: Result of 'malloc' is converted 
+to a pointer of type 'char', which is incompatible with sizeof operand 
+type 'int' [unix.MallocSizeof]
+    char *tempstring = malloc(sizeof(int) * len);
+    ~~~~~~             ^~~~~~ ~~~~~~~~~~~
+
+rc4_XOR-SWAP-ASCII.c:74:9: warning: 2nd function call argument is 
+an uninitialized value [core.CallAndMessage]
+        hext_to_ascii(tempstring,hex_encoded[i]);
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+rc4_XOR-SWAP-ASCII.c:96:21: warning: Result of 'malloc' is converted 
+to a pointer of type 'char', which is incompatible with sizeof operand 
+type 'int' [unix.MallocSizeof]
+    char *dump_to = malloc(sizeof(int) * strlen(argv[2]));
+    ~~~~~~          ^~~~~~ ~~~~~~~~~~~
+
+rc4_XOR-SWAP-ASCII.c:98:33: warning: Result of 'malloc' is converted 
+to a pointer of type 'unsigned char', which is incompatible with sizeof 
+operand type 'int'[unix.MallocSizeof]
+    unsigned char *ciphertext = malloc(sizeof(int) * strlen(argv[2]));
+    ~~~~~~~~~~~~~~~             ^~~~~~ ~~~~~~~~~~~
+\end{verbatim}
+
+This program was a bit more interesting but of course is not the
+standard RC4 algorithm and features some functionality to convert or
+hash back to its original plaintext value passed in. Here we can see
+some of the same issues as our previous programs implementing the stream
+cipher plus one more issue with a call argument being an uninitialized
+value.
+
+When running cppcheck on the above files, interesting enough it did not
+return any errors.
+
+\begin{verbatim}
+$ ls
+bins  err.txt  rc4-v0.c  rc4_XOR-SWAP-ASCII.c  rc4_XOR-SWAP.c  README.md
+$ cppcheck --enable=all --suppress=missingIncludeSystem 
+rc4_XOR-SWAP-ASCII.c 2>err.txt
+Checking rc4_XOR-SWAP-ASCII.c ...
+$ cat err.txt
+$ 
+\end{verbatim}
+
+\noindent \textbf{We can verify out hash results using the test vectors see here:}
+\url{https://en.wikipedia.org/wiki/RC4\#Test_vectors}
+
+\begin{verbatim}
+$ ./rc4-v0 Key Plaintext
+BBF316E8D940AF0AD3
+KEY = Key
+STRING = Plaintext
+HASH = BBF316E8D940AF0AD3
+\end{verbatim}
+
+\section*{Final Notes}
+The biggest reason for Zeus to come about and still infect systems today
+is due to finding exploits within systems. Potential reasons for
+allowing something like this happen can vary, when developing code
+especially for such large and complex systems, it can be hard to think
+of all possible test cases. Such as bugs, vulnerabilities, etc. The bug
+exploits the use of the now insecure stream sipher RC4. Patching
+crypotgraphic vulnerabilities is no easy chore and requires some
+detialed knowledge of some complex topics like number theory and perhaps
+abstract and more theoretical facets of math. Implementing fixes for
+popular bugs is difficult especially in the case of something that gets
+replicated and reproduced in a new variation of the previous version. It
+is a constant cycle as a security engineer to stay ahead of exploiters
+while they stay ahead of you.
 
 \end{sloppypar}
 \end{document}

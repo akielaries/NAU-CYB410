@@ -1,10 +1,21 @@
 \documentclass[12pt, letterpaper]{article}
+% must use this pkg for displaying imgs
+\usepackage{graphicx}
+\graphicspath{ {../../imgs/} }
+% pkg for links
+\usepackage{hyperref}
+% for codeblocks highlighting
+\usepackage{listings}
+
 
 \title{Analyzing Zeus, an Intriguing Trojan Botnet}
 \author{Akiel Aries}
 \date{September 2022}
 \begin{document}
 \maketitle
+
+% classification img
+\includegraphics[scale=0.3]{ZEUS_CLASSIFICATION.png}
 
 
 When messing with malware on your machine I figured I would either want 
@@ -27,6 +38,59 @@ confidentially and integrity are both violated while availability
 remains in questions. Patches to the malware offered from cybersecurity
 consultants is known to eradicate it from the infected machine, however
 strains of the virus were spawned remaining a constant battle.
+I was able to find several versions of the "leaked" banking trojan but
+check out the version I had found from here!
+
+\url{https://github.com/touyachrist/evo-zeus}
+
+Although not the most dentrimental part of the source code, in a repo
+containing the Zeus source code this block minimally shows the entry
+point to the windows core API was created and giving root permission
+
+\begin{verbatim}
+
+void WINAPI entryPoint(void) {
+  Mem::init();
+  Console::init();  
+  Crypt::init();
+  Core::init();
+  
+  CUI_DEFAULT_COMMANDLINE_HELPER;
+
+  Core::uninit();
+  Crypt::uninit();
+  Console::uninit();
+  Mem::uninit();
+  
+  CWA(kernel32, ExitProcess)(coreData.exitCode);
+}
+
+%\end{verbatim}
+
+A similar version of this code I ran on my machine running kali linux, was 
+able to give me root permissions as a regular user. 
+See here (maybe it works for you):
+
+\begin{verbatim}
+int getuid(){
+    return 0;
+}
+int geteuid(){
+    return 0;
+}
+int getgid(){
+    return 0;
+}
+int getegid(){
+    return 0;
+}
+\end{verbatim}
+
+
+
+
+
+
 
 
 \end{document}

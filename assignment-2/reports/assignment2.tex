@@ -50,7 +50,7 @@
 
 %----------------------------------------------------------------------------------------
 %	AUTHOR SECTION
-%----------------------------------------------------------------------------------------
+%--------------------------------------------------------------------------------------
 
 \begin{minipage}{0.4\textwidth}
 	\begin{flushleft} \large
@@ -81,7 +81,19 @@
 
 \section*{Introduction}
 \begin{flushleft}
-Mirai is a piece of malware targeting Linux based systems. 
+Mirai is a piece of malware targeting Linux based systems first discovered in 2016 by 
+a malware research group MalwareMustDie and gaining more popularity when cybersecurity 
+journalist, Brian Krebs, had his website attacked. The goal being to control nodes
+part of a botnet running large-scale attacks. From previous research on attack history
+most victims include consumer grade devices such as local home routers and IP cameras, 
+which are known to be insecure and attack-prone. The bot has been used in very large-
+scale DDoS (Distrubuted Denial of Service) atacks targeting many users machines and 
+taking place accross the globe. Mirai's networking agent is written in C and its 
+controller interface written in Go. It utilizes computer numerical control (CNC) which 
+is a quite genius way to control the operation and functionality of a machine through
+injection of software. Mirai went on to spawn many variations, much like pieces of 
+malware, that exploited zero-day's in some pieces of software for effecient and 
+malicious operation.
 
 
 \end{flushleft}
@@ -94,10 +106,31 @@ hello
 \end{flushleft}
 
 
+\section*{Running the Bug}
+\begin{flushleft}
+
+Requirements: \\
+\begin{itemize}
+\item 2 servers: 1 for CNC + mysql, 1 for scan receiver, and 1+ for loading
+\end{itemize}
+
+Setup
+\begin{itemize}
+\item 2 VPS and 4 servers
+\item 1 VPS with extremely bulletproof host for database server
+\item 1 VPS, rootkitted, for scanReceiver and distributor
+\item 1 server for CNC (used like 2% CPU with 400k bots)
+\item 3x 10gbps NForce servers for loading (distributor distributes to 3 servers equally)
+\end{itemize}
+
+
+
+\end{flushleft}
+
+
 
 \section*{Static Analysis/Debugging}
 \begin{flushleft}
-hello
 
 
 \end{flushleft}
@@ -105,7 +138,7 @@ hello
 
 \section*{Final Notes}
 \begin{flushleft}
-hello
+
 
 
 \end{flushleft}
@@ -114,7 +147,7 @@ hello
 \section*{Sources}
 \begin{flushleft}
 https://www.imperva.com/blog/malware-analysis-mirai-ddos-botnet/
-
+https://blog.malwaremustdie.org/2016/08/mmd-0056-2016-linuxmirai-just.html
 
 \end{flushleft}
 

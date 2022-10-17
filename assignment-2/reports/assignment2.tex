@@ -1,12 +1,18 @@
 \documentclass[12pt, letterpaper]{article}
 % must use this pkg for displaying imgs
 \usepackage{graphicx}
+\usepackage{blindtext}
+\usepackage{etoolbox}
+\usepackage[a4paper, total={6in, 9in}]{geometry}
 \graphicspath{ {../../imgs/} }
 % pkg for links
 \usepackage{hyperref}
 % for codeblocks highlighting
 \usepackage{listings}
 
+\makeatletter
+\patchcmd{\raggedright}{\parindent\z@}{}{}{}
+\makeatother
 
 \begin{document}
 
@@ -42,7 +48,7 @@
 \HRule \\[3.5cm]
 
 \begin{center}
-	\makebox[0.8\textwidth]{\includegraphics[width=0.8\textwidth]{mirai-major-events-timeline.png}}
+	\makebox[1.0\textwidth]{\includegraphics[width=1.0\textwidth]{mirai-major-events-timeline.png}}
 \end{center}
 
 
@@ -60,7 +66,7 @@
 	~
 	\begin{minipage}{0.4\textwidth}
 	\begin{flushright} \large
-	\emph{Supervisor:} \\
+	\emph{Professor:} \\
 	\papersupervisor
 	\end{flushright}
 \end{minipage}\\[1cm]
@@ -77,12 +83,11 @@
 
 % classification img
 %\includegraphics[scale=0.3]{mirai-major-events-timeline.png}
-
-\section*{Introduction}
 \begin{flushleft}
-Mirai is a piece of malware targeting Internet of Things (IoT) devices first discovered 
+\section{Overview}
+Mirai is a piece of malware targeting IoT (Internet of Things) devices first discovered 
 in 2016 by a malware research group MalwareMustDie and gaining more popularity when 
-cybersecurity journalist, Brian Krebs, had his website attacked. The goal being to 
+cybersecurity journalist Brian Krebs' website was attacked. The goal being to 
 control nodes part of a botnet running large-scale attacks. From previous research on 
 attack history most victims include consumer grade devices such as local home routers 
 and IP cameras, which are known to be insecure and attack-prone. The bot has been used 
@@ -93,10 +98,10 @@ which is a quite genius way to control the operation and functionality of a mach
 through injection of software. Since being discover and its source code leaked, Mirai 
 went on to spawn many variations, much like pieces of malware, that exploited zero-day's 
 in some pieces of software for effecient and malicious operation. 
-\end{flushleft}
 
-\section*{Code}
-\begin{flushleft}
+\newpage
+
+\section{Code}
 An interesting, and almost naive approach, is that Mirai makes use of dictionary attacks
 
 The scanner.c file does most of the initializing and calling of source. So within this
@@ -106,7 +111,7 @@ in usernames as well as password to perform a dictionary attack to sign in to in
 IoT devices. Which seems to be the biggest fix to preventing this piece of malware from
 infecting your system, using a somewhat secure password!
 
-\begin{verbatim}
+\begin{lstlisting}
 // Set up passwords
 // root     xc3511
 add_auth_entry("\x50\x4D\x4D\x56", 
@@ -129,7 +134,7 @@ add_auth_entry("\x50\x4D\x4D\x56",
 // root     default
 add_auth_entry("\x50\x4D\x4D\x56", 
 "\x46\x47\x44\x43\x57\x4E\x56", 5);
-\end{verbatim}
+\end{lstlisting}
 
 
 Interesting enough, within the scanner.c file some addresses are hardcoded not to visit 
@@ -138,14 +143,12 @@ Service, GE, HP as well as the Internet Assigned Numbers Authority (IANA) + more
 deemed as invalid for scanning.
 
 
-\begin{verbatim}
-static ipv4_t get_random_ip(void)
-{
+\begin{lstlisting}
+static ipv4_t get_random_ip(void) {
     uint32_t tmp;
     uint8_t o1, o2, o3, o4;
 
-    do
-    {
+    do {
         tmp = rand_next();
 
         o1 = tmp & 0xff;
@@ -198,14 +201,14 @@ static ipv4_t get_random_ip(void)
     return INET_ADDR(o1,o2,o3,o4);
 }
 
-\end{verbatim}
+\end{lstlisting}
 
 Since Mirai is a DDOS bot, there are many spots in the code base of the bug that 
 references some networking principles. The OSI (Open Systems Interconnection) model 
 depicting the functions of a networking system. For now, let's take a look at how
 Mirai makes use of layer 3, network. 
 \begin{center}
-{\includegraphics[width=0.8\textwidth]{osi-networking.png}}
+{\includegraphics[width=0.5\textwidth]{osi-networking.png}}
 \end{center}
 
 Mirai makes use of launching GRE IP (Generic Routing Encapsulation) \& GRE ETH floods
@@ -217,10 +220,10 @@ This loop iterates through the ACK + SEQ numbers that are retrieved. SEQ is the 
 sent by a TCP client that specifies the amount of data sent in the session. ACK is the 
 value returned by the TCP server that indicates data has been recieved and is ready to
 begin the next segment. 
-\begin{verbatim}
+
+\begin{lstlisting}
 // Retrieve all ACK/SEQ numbers
-for (i = 0; i < targs_len; i++)
-{
+for (i = 0; i < targs_len; i++) {
     int fd;
     struct sockaddr_in addr, recv_addr;
     socklen_t recv_addr_len;
@@ -228,8 +231,10 @@ for (i = 0; i < targs_len; i++)
     time_t start_recv;
 
     stomp_setup_nums:
+\end{lstlisting}
 
-\end{verbatim}
+
+\center{\includegraphics[width=1.0\textwidth]{mirai-bandwidth.png}}
 
 
 \begin{verbatim}
@@ -239,16 +244,15 @@ for (i = 0; i < targs_len; i++)
 This particular piece of the tcp attack file caught my attention and I found
 that 0xffffffff is a Windows update error returning when the update fails to search
 or install. 
-\begin{verbatim}
+
+\begin{lstlisting}
 if (source_ip == 0xffffffff)
 	iph->saddr = rand_next();
-\end{verbatim}
+\end{lstlisting}
 
-\end{flushleft}
-
+\newpage
 
 \section*{Scale}
-\begin{flushleft}
 It was reported that the Mirai virus was located in 160+ countries.
 Geolocations of devices infected by Mirai
 
@@ -267,11 +271,9 @@ Colombia	 & 1.5 \%\\
 \end{tabular}
 \end{center}
 
-\end{flushleft}
 
 
-\section*{Running the Bug}
-\begin{flushleft}
+\section*{Execution}
 
 Requirements: \\
 \begin{itemize}
@@ -289,33 +291,16 @@ Setup
 
 
 
-\end{flushleft}
-
-
-
 \section*{Static Analysis/Debugging}
-\begin{flushleft}
-
-
-\end{flushleft}
 
 
 \section*{Final Notes}
-\begin{flushleft}
-
-
-
-\end{flushleft}
 
 
 \section*{Sources}
-\begin{flushleft}
 https://www.imperva.com/blog/malware-analysis-mirai-ddos-botnet/
 https://blog.malwaremustdie.org/2016/08/mmd-0056-2016-linuxmirai-just.html
 
 \end{flushleft}
-
-
-
 \end{sloppypar}
 \end{document}

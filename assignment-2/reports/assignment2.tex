@@ -97,13 +97,14 @@ and its controller interface written in Go. It utilizes computer numerical contr
 which is a quite genius way to control the operation and functionality of a machine 
 through injection of software. Since being discover and its source code leaked, Mirai 
 went on to spawn many variations, much like pieces of malware, that exploited zero-day's 
-in some pieces of software for effecient and malicious operation. 
+in some pieces of software for effecient and malicious operation. In recent news, on
+October 14th 2022, it was reported that the Wynncraft Minecraft server was hit with
+a 2.5 Tbps DDoS attack lasting about 2 minutes in total. As we go in depth we will see
+why this number is absurd. 
 
 \newpage
 
 \section{Code}
-An interesting, and almost naive approach, is that Mirai makes use of dictionary attacks
-
 The scanner.c file does most of the initializing and calling of source. So within this
 file the first thing that caught my attention was the \verb|void scanner_init(void)| 
 function. In the function we can see a series of \verb|add_auth_entry| calls that add 
@@ -136,12 +137,10 @@ add_auth_entry("\x50\x4D\x4D\x56",
 "\x46\x47\x44\x43\x57\x4E\x56", 5);
 \end{lstlisting}
 
-
 Interesting enough, within the scanner.c file some addresses are hardcoded not to visit 
 when performing the IP scan for inital infection. The Department of Defense, the US Postal
 Service, GE, HP as well as the Internet Assigned Numbers Authority (IANA) + more were 
 deemed as invalid for scanning.
-
 
 \begin{lstlisting}
 static ipv4_t get_random_ip(void) {
@@ -202,6 +201,30 @@ static ipv4_t get_random_ip(void) {
 }
 
 \end{lstlisting}
+Mirai uses many techniques to hide it's identity and what I found the most
+naive method to be was the spoofing of user agents specifically these:
+\begin{verbatim}
+Mozilla/5.0 (Windows NT 10.0; WOW64) 
+AppleWebKit/537.36 (KHTML, like Gecko) 
+Chrome/51.0.2704.103 Safari/537.36
+
+Mozilla/5.0 (Windows NT 10.0; WOW64) 
+AppleWebKit/537.36 (KHTML, like Gecko) 
+Chrome/52.0.2743.116 Safari/537.36
+
+Mozilla/5.0 (Windows NT 6.1; WOW64) 
+AppleWebKit/537.36 (KHTML, like Gecko) 
+Chrome/51.0.2704.103 Safari/537.36
+
+Mozilla/5.0 (Windows NT 6.1; WOW64) 
+AppleWebKit/537.36 (KHTML, like Gecko) 
+Chrome/52.0.2743.116 Safari/537.36
+
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) 
+AppleWebKit/601.7.7 (KHTML, like Gecko) 
+Version/9.1.2 Safari/601.7.7
+\end{verbatim}
+
 
 Since Mirai is a DDOS bot, there are many spots in the code base of the bug that 
 references some networking principles. The OSI (Open Systems Interconnection) model 
@@ -213,8 +236,12 @@ Mirai makes use of layer 3, network.
 
 Mirai makes use of launching GRE IP (Generic Routing Encapsulation) \& GRE ETH floods
 in conjunction with SYN \& ACK floods. Another important piece of the code is the 
-hardcoding/bypassing taking place that implies more security risks. 
+hardcoding/bypassing taking place that implies more security risks. The GRE floods
+when analyzed closely peak at approximately 280 Gbps.
 
+\begin{center}
+{\includegraphics[width=1.0\textwidth]{mirai-bandwidth.png}}
+\end{center}
 
 This loop iterates through the ACK + SEQ numbers that are retrieved. SEQ is the value
 sent by a TCP client that specifies the amount of data sent in the session. ACK is the 
@@ -233,16 +260,8 @@ for (i = 0; i < targs_len; i++) {
     stomp_setup_nums:
 \end{lstlisting}
 
-
-\center{\includegraphics[width=1.0\textwidth]{mirai-bandwidth.png}}
-
-
-\begin{verbatim}
-
-\end{verbatim}
-
 This particular piece of the tcp attack file caught my attention and I found
-that 0xffffffff is a Windows update error returning when the update fails to search
+that 0xffffffff is a Windows update error returning when the update fails to search 
 or install. 
 
 \begin{lstlisting}
@@ -254,8 +273,7 @@ if (source_ip == 0xffffffff)
 
 \section*{Scale}
 It was reported that the Mirai virus was located in 160+ countries.
-Geolocations of devices infected by Mirai
-
+Geolocations of devices infected by Mirai:
 \begin{center}
 \begin{tabular}{c c}
 Vietnam	& 12.8 \%\\

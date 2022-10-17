@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2022.9.26)  16 OCT 2022 18:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2022.9.26)  16 OCT 2022 18:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -283,15 +283,15 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <../../imgs//mirai-major-ev
-ents-timeline.png>]
-<../../imgs//osi-networking.png, id=17, 280.04625pt x 331.2375pt>
+ents-timeline.png>] [2] [3] [4]
+<../../imgs//osi-networking.png, id=32, 280.04625pt x 331.2375pt>
 File: ../../imgs//osi-networking.png Graphic file (type png)
 <use ../../imgs//osi-networking.png>
-Package pdftex.def Info: ../../imgs//osi-networking.png  used on input line 108
+Package pdftex.def Info: ../../imgs//osi-networking.png  used on input line 208
 .
 (pdftex.def)             Requested size: 312.00119pt x 369.04767pt.
- [2] [3 <../../imgs//osi-networking.png>] [4] [5] [6] [7] [8] (./assignment2.au
-x)
+
+[5 <../../imgs//osi-networking.png>] [6] [7] [8] (./assignment2.aux)
 Package rerunfilecheck Info: File `assignment2.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
@@ -310,7 +310,7 @@ are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on assignment2.pdf (8 pages, 191839 bytes).
+Output written on assignment2.pdf (8 pages, 191914 bytes).
 PDF statistics:
  93 PDF objects out of 1000 (max. 8388607)
  65 compressed objects within 1 object stream

@@ -99,20 +99,6 @@ in some pieces of software for effecient and malicious operation.
 \begin{flushleft}
 An interesting, and almost naive approach, is that Mirai makes use of dictionary attacks
 
-
-Since Mirai is a DDOS bot, there are many spots in the code base of the bug that 
-references some networking principles. The OSI (Open Systems Interconnection) model 
-depicting the functions of a networking system. For now, let's take a look at how
-Mirai makes use of layer 3, network. 
-\begin{center}
-{\includegraphics[width=0.8\textwidth]{osi-networking.png}}
-\end{center}
-
-Mirai makes use of launching GRE IP (Generic Routing Encapsulation) \& GRE ETH floods
-in conjunction with SYN \& ACK floods. Another important piece of the code is the 
-hardcoding/bypassing taking place that implies more security risks. 
-
-
 The scanner.c file does most of the initializing and calling of source. So within this
 file the first thing that caught my attention was the \verb|void scanner_init(void)| 
 function. In the function we can see a series of \verb|add_auth_entry| calls that add 
@@ -214,6 +200,17 @@ static ipv4_t get_random_ip(void)
 
 \end{verbatim}
 
+Since Mirai is a DDOS bot, there are many spots in the code base of the bug that 
+references some networking principles. The OSI (Open Systems Interconnection) model 
+depicting the functions of a networking system. For now, let's take a look at how
+Mirai makes use of layer 3, network. 
+\begin{center}
+{\includegraphics[width=0.8\textwidth]{osi-networking.png}}
+\end{center}
+
+Mirai makes use of launching GRE IP (Generic Routing Encapsulation) \& GRE ETH floods
+in conjunction with SYN \& ACK floods. Another important piece of the code is the 
+hardcoding/bypassing taking place that implies more security risks. 
 
 
 This loop iterates through the ACK + SEQ numbers that are retrieved. SEQ is the value

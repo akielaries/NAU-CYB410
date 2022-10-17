@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2022.9.26)  9 OCT 2022 20:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2022.9.26)  16 OCT 2022 18:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -275,37 +275,128 @@ Package pdftex.def Info: ../../imgs//mirai-major-events-timeline.png  used on i
 nput line 45.
 (pdftex.def)             Requested size: 312.00119pt x 176.02266pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 60.
+(Font)              <12> on input line 59.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 60.
+(Font)              <8> on input line 59.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 60.
+(Font)              <6> on input line 59.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <../../imgs//mirai-major-ev
-ents-timeline.png>] [2] [3]
-(./assignment2.aux)
+ents-timeline.png>]
+<../../imgs//osi-networking.png, id=17, 280.04625pt x 331.2375pt>
+File: ../../imgs//osi-networking.png Graphic file (type png)
+<use ../../imgs//osi-networking.png>
+Package pdftex.def Info: ../../imgs//osi-networking.png  used on input line 108
+.
+(pdftex.def)             Requested size: 312.00119pt x 369.04767pt.
+ [2] [3 <../../imgs//osi-networking.png>]
+Overfull \hbox (116.35025pt too wide) in paragraph at lines 153--153
+[]    \OT1/cmtt/m/n/12 while (o1 == 127 ||                             // 127.0
+.0.0/8      - Loopback[] 
+ []
+
+
+Overfull \hbox (196.62529pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 0) ||                              // 0.0.0
+.0/8        - Invalid address space[] 
+ []
+
+
+Overfull \hbox (215.1503pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 3) ||                              // 3.0.0
+.0/8        - General Electric Company[] 
+ []
+
+
+Overfull \hbox (208.9753pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 15 || o1 == 16) ||                 // 15.0.
+0.0/7       - Hewlett-Packard Company[] 
+ []
+
+
+Overfull \hbox (171.92528pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 56) ||                             // 56.0.
+0.0/8       - US Postal Service[] 
+ []
+
+
+Overfull \hbox (165.75027pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 10) ||                             // 10.0.
+0.0/8       - Internal network[] 
+ []
+
+
+Overfull \hbox (165.75027pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 192 && o2 == 168) ||               // 192.1
+68.0.0/16   - Internal network[] 
+ []
+
+
+Overfull \hbox (165.75027pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 172 && o2 >= 16 && o2 < 32) ||     // 172.1
+6.0.0/14    - Internal network[] 
+ []
+
+
+Overfull \hbox (171.92528pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 100 && o2 >= 64 && o2 < 127) ||    // 100.6
+4.0.0/10    - IANA NAT reserved[] 
+ []
+
+
+Overfull \hbox (171.92528pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 169 && o2 > 254) ||                // 169.2
+54.0.0/16   - IANA NAT reserved[] 
+ []
+
+
+Overfull \hbox (165.75027pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 198 && o2 >= 18 && o2 < 20) ||     // 198.1
+8.0.0/15    - IANA Special use[] 
+ []
+
+
+Overfull \hbox (122.52525pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 >= 224) ||                            // 224.*
+.*.*+       - Multicast[] 
+ []
+
+
+Overfull \hbox (159.57527pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 (o1 == 6 || o1 == 7 || o1 == 11 || o1 == 21 || o1 
+== 22 || o1 == 26 || o1 == 28[] 
+ []
+
+
+Overfull \hbox (128.70026pt too wide) in paragraph at lines 153--153
+[]          \OT1/cmtt/m/n/12 || o1 == 29 || o1 == 30 || o1 == 33 || o1 == 55 ||
+ o1 == 214 || o1 == 215)[] 
+ []
+
+[4] [5] [6] (./assignment2.aux)
 Package rerunfilecheck Info: File `assignment2.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 9491 strings out of 479940
- 148841 string characters out of 5886929
- 444401 words of memory out of 5000000
- 27602 multiletter control sequences out of 15000+600000
- 475393 words of font info for 48 fonts, out of 8000000 for 9000
+ 9507 strings out of 479940
+ 149176 string characters out of 5886929
+ 454401 words of memory out of 5000000
+ 27612 multiletter control sequences out of 15000+600000
+ 475562 words of font info for 49 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 72i,5n,77p,258b,524s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,6n,77p,258b,655s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/akiel/.texlive2022/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600
 pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></u
 sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/sh
 are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on assignment2.pdf (3 pages, 163593 bytes).
+xmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on assignment2.pdf (6 pages, 189517 bytes).
 PDF statistics:
- 62 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 83 PDF objects out of 1000 (max. 8388607)
+ 57 compressed objects within 1 object stream
+ 14 named destinations out of 1000 (max. 500000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

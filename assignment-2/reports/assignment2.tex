@@ -1,6 +1,8 @@
 \documentclass[12pt, letterpaper]{article}
 % must use this pkg for displaying imgs
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{multirow,array}
 \usepackage{blindtext}
 \usepackage{etoolbox}
 \usepackage[a4paper, total={6in, 9in}]{geometry}
@@ -9,6 +11,8 @@
 \usepackage{hyperref}
 % for codeblocks highlighting
 \usepackage{listings}
+\lstset{language=C}
+
 
 \makeatletter
 \patchcmd{\raggedright}{\parindent\z@}{}{}{}
@@ -22,7 +26,7 @@
 \newcommand{\paperuniversity}{Northern Arizona University}
 
 \newcommand{\papertitle}{Analyzing Mirai}
-\newcommand{\paperminortitle}{a *Nix-Focused Attack}
+\newcommand{\paperminortitle}{a Linux-Focused Attack}
 \newcommand{\papermajorheading}{Cybersecurity}
 \newcommand{\paperminorheading}{CYB 410 - Software Security}
 
@@ -102,9 +106,9 @@ October 14th 2022, it was reported that the Wynncraft Minecraft server was hit w
 a 2.5 Tbps DDoS attack lasting about 2 minutes in total. As we go in depth we will see
 why this number is absurd. 
 
-\newpage
+%\newpage
 
-\section{Code}
+\section{Source Code}
 The scanner.c file does most of the initializing and calling of source. So within this
 file the first thing that caught my attention was the \verb|void scanner_init(void)| 
 function. In the function we can see a series of \verb|add_auth_entry| calls that add 
@@ -179,16 +183,16 @@ static ipv4_t get_random_ip(void) {
           // 224.*.*.*+       - Multicast
           (o1 >= 224) ||
 		  /*
-		   * 6.0.0.0/7                 - Department of Defense 
-		   * 11.0.0.0/8                - Department of Defense
-		   * 21.0.0.0/8                - Department of Defense
-		   * 22.0.0.0/8                - Department of Defense
-		   * 26.0.0.0/8                - Department of Defense
-		   * 28.0.0.0/7                - Department of Defense
-		   * 30.0.0.0/8                - Department of Defense
-		   * 33.0.0.0/8                - Department of Defense
-		   * 55.0.0.0/8                - Department of Defense
-		   * 214.0.0.0/7               - Department of Defense
+		   * 6.0.0.0/7		- Department of Defense 
+		   * 11.0.0.0/8 	- Department of Defense
+		   * 21.0.0.0/8 	- Department of Defense
+		   * 22.0.0.0/8 	- Department of Defense
+		   * 26.0.0.0/8 	- Department of Defense
+		   * 28.0.0.0/7 	- Department of Defense
+		   * 30.0.0.0/8 	- Department of Defense
+		   * 33.0.0.0/8 	- Department of Defense
+		   * 55.0.0.0/8 	- Department of Defense
+		   * 214.0.0.0/7	- Department of Defense
 		  /*          
           (o1 == 6 || o1 == 7 || o1 == 11 || o1 == 21 
           || o1 == 22 || o1 == 26 || o1 == 28 
@@ -240,7 +244,7 @@ hardcoding/bypassing taking place that implies more security risks. The GRE floo
 when analyzed closely peak at approximately 280 Gbps.
 
 \begin{center}
-{\includegraphics[width=1.0\textwidth]{mirai-bandwidth.png}}
+{\includegraphics[width=0.8\textwidth]{mirai-bandwidth.png}}
 \end{center}
 
 This loop iterates through the ACK + SEQ numbers that are retrieved. SEQ is the value
@@ -269,10 +273,35 @@ if (source_ip == 0xffffffff)
 	iph->saddr = rand_next();
 \end{lstlisting}
 
-\newpage
+%\newpage
 
 \section*{Scale}
-It was reported that the Mirai virus was located in 160+ countries.
+On just the first day, it was said that upwards of 60,000 IoT devices were infected and at
+its peak infected more than 600,000 devices. As previously stated many of these targets
+were IP cameras. It was reported that the Mirai virus was located in 160+ countries. Of the
+devices that were infected, routers and cameras made up the majority. \\
+
+Overview of infiltration:
+\begin{center}
+\begin{table}[ht]
+  \large  
+  \centering 
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{c|c||*{8}{c|}}
+\cline{2-6}
+&& \bfseries HTTPS & \bfseries Telnet & \bfseries FTP & \bfseries SSH \\
+\cline{2-6}
+&    \bfseries routers & 6\% &  17\% &  50\% & 4\% \\ 
+    \cline{2-6}
+&    \bfseries cameras & 37\% &  9\% &  0\% &  0\%  \\
+    \cline{2-6}
+  \end{tabular}
+\end{table} 
+\end{center}
+I think this nicely sums up the security of using SSH and how it could possibly prevent an 
+attack such as this one. FTP has been known to be an insecure protocol so there are no 
+surprises there. 
+
 Geolocations of devices infected by Mirai:
 \begin{center}
 \begin{tabular}{c c}
@@ -290,7 +319,6 @@ Colombia	 & 1.5 \%\\
 \end{center}
 
 
-
 \section*{Execution}
 
 Requirements: \\
@@ -303,21 +331,113 @@ Setup
 \item 2 VPS and 4 servers
 \item 1 VPS with extremely bulletproof host for database server
 \item 1 VPS, rootkitted, for scanReceiver and distributor
-\item 1 server for CNC (used like 2% CPU with 400k bots)
+\item 1 server for CNC (used roughly 2\% CPU with 400k bots)
 \item 3x 10gbps NForce servers for loading (distributor distributes to 3 servers equally)
 \end{itemize}
 
 
+\section*{Reproducible Example}
+The overarching and complete piece of malware known as Mirai, would be difficult and 
+innfective to run static analysis on as a whole. So to get around this I figured I could
+make a very small and scaled down version of a core functionality the bot uses. Brute
+force password cracking also known as dictionary attacks, are an innefecient way of guessing
+a users password based off a number of inputs. For example, if there are 20 password stored
+in a .txt file, our dictionary attack would essentially compare the credentials stored in the
+file to the correct ones used to login to the targeted machine. In the example below, I attempted 
+to recreate what the dictionary attack piece of the malware is doing. However, in this extremely
+naive and rudimentary implementation, the goal was mainly to create something that we can 
+test and analysis using fuzzing + static analysis techniques. Here is how the example operates: 
+
+\begin{itemize}
+\item reads the hardcoded textfile
+\item checks if argv[1] if fulfilled, if a string is passed in after calling the binary
+\item checks if our textfile exists 
+\item traverses over the lines of the file + length
+\item checks if each line corresponds to argv[1], our passed in string when calling
+\item if there is a match the program says so
+\item close files, free lines, return
+\end{itemize} 
+\begin{lstlisting}
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+    char    *filepath = "pass.txt";
+    bool    infile = false;
+    char    *line = NULL;
+    size_t  len = 0;
+    ssize_t read;
+
+    FILE    *fp = fopen(filepath, "r");
+
+    if (argv[1] == NULL) {
+        printf("Pass in a string\n");
+        return 0;
+    }   
+
+    if (!fp) {
+        fprintf(stderr, "Failed to open %s\n", filepath);
+        return 1;
+    }   
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        line[strcspn(line, "\n")] = 0;
+        if (!strcmp(line, argv[1])) {
+            infile = true;
+            printf("MATCH:      %s  = %s \n", argv[1], line);
+            break;
+        }   
+        else {
+            printf("NO MATCH:   %s  != %s \n", argv[1], line);
+        }   
+    }   
+    fclose(fp);
+
+    if (line)
+        free(line);
+
+    return 0;
+}
+\end{lstlisting}
+Of course there are many things that the code above does not take into account that an 
+actual dictionary attack program would. In a real world brute force example we would need
+to think about how to get past any sort of error messages that result from exhaustive 
+tries + errors. For example, entering the password incorrectly 5 times in a row will likely 
+result in an error message being returned and potentially an account lock. Although this is 
+more common in web-based interface, most protocols when used over the CLI, will prompt on 
+password failure and take other measures. A workaround for this would to implement a way to
+check all of these passwords before the process of returning an error message is executed. 
+Depending on how the security method is implemented, if it is in a sort of sequential order
+of enter password, verify password, report error based on a condition, we would want to think
+of a way to operate between steps 2 and 3. In a real world example, the program would also 
+perform in sort of a reverse workflow. In the example above, we have the user who enters the
+string act as the 'attacker' in a typical workflow trying to guess the password of the 
+'host' in this case. A typical example is the opposite. 
 
 \section*{Static Analysis/Debugging}
+When using clang to analyze the file, our only error has to do with an unused variable, 
+big deal. We also get returned a fancy xml doc that says this in a tree-like diagram. 
+Running cppcheck against the binary also returned no errors. This is not surprising as the
+reproducible example is extremely minimal. \\
 
+With clang: \\
+\verb|clang --analyze scan.c| \\
+
+With cppcheck: \\
+\verb|cppcheck --enable=all --suppress=missingIncludeSystem  scan.c2>err.txt | \\
+
+\section*{Fuzzing with libFuzz, AFL, and more}
+
+Compile with afl-gcc:
+\verb|$ afl-gcc -o scan_fuzz -I. scan.c -lm|
+
+Run with afl-fuzz:
+\verb|$ afl-fuzz -i in -o out/ ./scan_fuzz @@ |
 
 \section*{Final Notes}
 
-
-\section*{Sources}
-https://www.imperva.com/blog/malware-analysis-mirai-ddos-botnet/
-https://blog.malwaremustdie.org/2016/08/mmd-0056-2016-linuxmirai-just.html
 
 \end{flushleft}
 \end{sloppypar}

@@ -1,0 +1,8 @@
+password
+admin
+12345
+98765
+123456789
+1234567890
+password123
+init

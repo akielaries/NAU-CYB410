@@ -9,19 +9,14 @@ char *passwd(char *str_passwd) {
     char    *line = NULL;
     size_t  len = 0;
     ssize_t read;
-
     FILE    *fp = fopen(filepath, "r");
-
     printf("Comparing %s \n", str_passwd);
-
     if (str_passwd == NULL) {
         printf("Pass in a string\n");
     }
-
     if (!fp) {
         fprintf(stderr, "Failed to open %s\n", filepath);
     }
-
     while ((read = getline(&line, &len, fp)) != -1) {
         line[strcspn(line, "\n")] = 0;
         if (!strcmp(line, str_passwd)) {
@@ -34,7 +29,6 @@ char *passwd(char *str_passwd) {
         }
     }
     fclose(fp);
-
     if (line)
         free(line);
 
@@ -46,8 +40,6 @@ int main() {
     char t0[100] = "password";
     char t1[100] = "password123";
     char t2[100] = "init";
-    //char password[][100] = {"password", "password123"};
-
     passwd(t0);
     passwd(t1);
     passwd(t2);

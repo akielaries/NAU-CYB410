@@ -428,16 +428,87 @@ With clang: \\
 With cppcheck: \\
 \verb|cppcheck --enable=all --suppress=missingIncludeSystem  scan.c2>err.txt | \\
 
-\section*{Fuzzing with libFuzz, AFL, and more}
+\section*{Fuzzing with AFL}
+Fuzzing is the idea of providing inputs to our program and evaluating them crash or produce bugs. 
+This method is very similar to the idea of unit testing but without putting tremendous thought into 
+creating test methods and values from scratch for optimal test coverage. The task of fuzzing argv 
+was troublesome based off of some research into the matter, ultimately forcing me to refactor the 
+program to take no arguments and performs completely within the scope of the file.
+I had ran into some issues running afl-fuzz due to declaring input files. This part was tricky because 
+I had a hard time coming up with specific test input files which caused the tool to hangup and not 
+perform it's purpose. For this I was thinking to create a file of some type that has a list of password,
+we then use our program to input the list of passwords and compare them to the original set. This almost
+seems counterproductive but for producing results I am sure it is fine. 
 
-Compile with afl-gcc:
-\verb|$ afl-gcc -o scan_fuzz -I. scan.c -lm|
+Compile with afl-gcc: \\
+\verb|$ afl-gcc -o scan_fuzz -I. scan.c -lm| \\
 
-Run with afl-fuzz:
-\verb|$ afl-fuzz -i in -o out/ ./scan_fuzz @@ |
+Run with afl-fuzz: \\
+\verb|$ afl-fuzz -i in -o out/ ./scan_fuzz @@| \\
+
+After fuzzing your program for some time, there will be an out/ directory created with 
+some files within. The most interesting and perhaps useful was the fuzzer stats. After 
+running \verb|cat| on the file we get:
+
+\begin{lstlisting}
+start_time        : 1667788517
+last_update       : 1667788525
+fuzzer_pid        : 1794047
+cycles_done       : 89
+execs_done        : 24111
+execs_per_sec     : 1600.00
+paths_total       : 1
+paths_favored     : 1
+paths_found       : 0
+paths_imported    : 0
+max_depth         : 1
+cur_path          : 0
+pending_favs      : 0
+pending_total     : 0
+variable_paths    : 0
+stability         : 100.00%
+bitmap_cvg        : 0.02%
+unique_crashes    : 0
+unique_hangs      : 0
+last_path         : 0
+last_crash        : 0
+last_hang         : 0
+execs_since_crash : 24111
+exec_timeout      : 20
+afl_banner        : scan_fuzz
+afl_version       : 2.57b
+target_mode       : default
+command_line      : afl-fuzz -i in -o out/ ./scan_fuzz
+slowest_exec_ms   : 1
+peak_rss_mb       : 1
+\end{lstlisting}
+The troublesome part was the issues of detecting paths. I am unsure of the specific issues 
+here but am thinking it has to do with the input test files we need for the fuzzing to take 
+place. Mostly these issues are caused by command line argument errors specifically with 
+paths and arguments to our binary we wish to fuzz. 
+
+\begin{center}
+{\includegraphics[width=0.8\textwidth]{afl-fuzz.png}}
+\end{center}
+
+Notice how last new path is highlighted, we could fix this with the steps proposed earlier.
+When running on packages made to be fuzzed with AFL, I was able to get it working quite nicely
+it is just the amount of preplanned thought and test-creation that must be done in order to 
+use the tool effectively. 
+
+\begin{center}
+{\includegraphics[width=0.8\textwidth]{afl-fuzz-pass.png}}
+\end{center}
 
 \section*{Final Notes}
-
+The Mirai bot goes down in history as one of the most successful (in terms of users infected)
+and carries its tasks out exactly as intended. As most pieces of malware, this one went on 
+to spawn many strains, political chaos around the matter, and imposters taking credit. There
+are many takeaways from analyzing this bug, the biggest being to use a secure password and 
+enable SSH on capable devices. The bot operates on dictionary attacks so I think secure 
+credentials are a huge step in preventing infection of not just this virus but many more. 
+Based on the research and analysis of many sources, SSH was the common method of encryption that 
+saw the least amound of attacks in comparison to insecure counterparts. 
 
 \end{flushleft}
 \end{sloppypar}

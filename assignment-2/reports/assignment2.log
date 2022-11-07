@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2022.9.26)  6 NOV 2022 18:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2022.9.26)  6 NOV 2022 20:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -538,15 +538,28 @@ Overfull \hbox (3.47925pt too wide) in paragraph at lines 393--394
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[8] [9] (./assignment2.aux)
+[8] [9] [10]
+<../../imgs//afl-fuzz.png, id=244, 652.4375pt x 448.67625pt>
+File: ../../imgs//afl-fuzz.png Graphic file (type png)
+<use ../../imgs//afl-fuzz.png>
+Package pdftex.def Info: ../../imgs//afl-fuzz.png  used on input line 491.
+(pdftex.def)             Requested size: 346.89731pt x 238.56406pt.
+<../../imgs//afl-fuzz-pass.png, id=245, 652.4375pt x 448.67625pt>
+File: ../../imgs//afl-fuzz-pass.png Graphic file (type png)
+<use ../../imgs//afl-fuzz-pass.png>
+Package pdftex.def Info: ../../imgs//afl-fuzz-pass.png  used on input line 500.
+
+(pdftex.def)             Requested size: 346.89731pt x 238.56406pt.
+ [11 <../../imgs//afl-fuzz.png> <../../imgs//afl-fuzz-pass.png>]
+[12] (./assignment2.aux)
 Package rerunfilecheck Info: File `assignment2.out' has not changed.
 (rerunfilecheck)             Checksum: 7AFD02E2D97EF5759FB77890270A4A9C;184.
  ) 
 Here is how much of TeX's memory you used:
- 12049 strings out of 479940
- 184310 string characters out of 5886929
+ 12176 strings out of 479940
+ 186388 string characters out of 5886929
  719391 words of memory out of 5000000
- 29957 multiletter control sequences out of 15000+600000
+ 30048 multiletter control sequences out of 15000+600000
  478640 words of font info for 60 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  72i,8n,77p,258b,2034s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -560,10 +573,10 @@ texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/public/amsfonts/cm/cmtt12.pfb>
-Output written on assignment2.pdf (9 pages, 443707 bytes).
+Output written on assignment2.pdf (12 pages, 573686 bytes).
 PDF statistics:
- 290 PDF objects out of 1000 (max. 8388607)
- 250 compressed objects within 3 object streams
- 154 named destinations out of 1000 (max. 500000)
- 32 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 344 PDF objects out of 1000 (max. 8388607)
+ 297 compressed objects within 3 object streams
+ 188 named destinations out of 1000 (max. 500000)
+ 42 words of extra memory for PDF output out of 10000 (max. 10000000)
 

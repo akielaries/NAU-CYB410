@@ -1,9 +1,9 @@
-start_time        : 1667785392
-last_update       : 1667785457
-fuzzer_pid        : 587546
-cycles_done       : 720
-execs_done        : 185735
-execs_per_sec     : 2999.15
+start_time        : 1667788517
+last_update       : 1667788525
+fuzzer_pid        : 1794047
+cycles_done       : 89
+execs_done        : 24111
+execs_per_sec     : 1600.00
 paths_total       : 1
 paths_favored     : 1
 paths_found       : 0
@@ -20,11 +20,11 @@ unique_hangs      : 0
 last_path         : 0
 last_crash        : 0
 last_hang         : 0
-execs_since_crash : 185735
+execs_since_crash : 24111
 exec_timeout      : 20
 afl_banner        : scan_fuzz
 afl_version       : 2.57b
 target_mode       : default
-command_line      : afl-fuzz -i in -o out/ ./scan_fuzz --
-slowest_exec_ms   : 14
+command_line      : afl-fuzz -i in -o out/ ./scan_fuzz
+slowest_exec_ms   : 1
 peak_rss_mb       : 1

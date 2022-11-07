@@ -429,16 +429,70 @@ With cppcheck: \\
 \verb|cppcheck --enable=all --suppress=missingIncludeSystem  scan.c2>err.txt | \\
 
 \section*{Fuzzing with AFL}
-Fuzzing is the idea of providing inputs to our program and evaluating them crash or produce bugs. 
-This method is very similar to the idea of unit testing but without putting tremendous thought into 
-creating test methods and values from scratch for optimal test coverage. The task of fuzzing argv 
-was troublesome based off of some research into the matter, ultimately forcing me to refactor the 
-program to take no arguments and performs completely within the scope of the file.
-I had ran into some issues running afl-fuzz due to declaring input files. This part was tricky because 
-I had a hard time coming up with specific test input files which caused the tool to hangup and not 
-perform it's purpose. For this I was thinking to create a file of some type that has a list of password,
-we then use our program to input the list of passwords and compare them to the original set. This almost
-seems counterproductive but for producing results I am sure it is fine. 
+Fuzzing is the idea of providing inputs to our program and evaluating them crash or produce
+bugs. This method is very similar to the idea of unit testing but without putting tremendous 
+thought into creating test methods and values from scratch for optimal test coverage. The task 
+of fuzzing argv was troublesome based off of some research into the matter, ultimately forcing 
+me to refactor the program to take no arguments and performs completely within the scope of 
+the file. I had ran into some issues running afl-fuzz due to declaring input files. This part 
+was tricky because I had a hard time coming up with specific test input files which caused 
+the tool to hangup and not perform it's purpose. For this I was thinking to create a file of 
+some type that has a list of password, we then use our program to input the list of passwords 
+and compare them to the original set. This almost seems counterproductive but for producing
+results I am sure it is fine. 
+
+Here is the refactored example we are using:
+
+\begin{lstlisting}
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+char *passwd(char *str_passwd) {
+    char    *filepath = "pass.txt";
+    bool    infile = false;
+    char    *line = NULL;
+    size_t  len = 0;
+    ssize_t read;
+    FILE    *fp = fopen(filepath, "r");
+    printf("Comparing %s \n", str_passwd);
+    if (str_passwd == NULL) {
+        printf("Pass in a string\n");
+    }
+    if (!fp) {
+        fprintf(stderr, "Failed to open %s\n", filepath);
+    }
+    while ((read = getline(&line, &len, fp)) != -1) {
+        line[strcspn(line, "\n")] = 0;
+        if (!strcmp(line, str_passwd)) {
+            infile = true;
+            printf("MATCH:      %s  = %s \n", str_passwd, line);
+            break;
+        }
+        else {
+            printf("NO MATCH:   %s  != %s \n", str_passwd, line);
+        }
+    }
+    fclose(fp);
+    if (line)
+        free(line);
+
+    return str_passwd;
+}
+
+int main() {
+    printf("<- Naive & Rudimentary implementation of dictionary attacks ->\n");
+    char t0[100] = "password";
+    char t1[100] = "password123";
+    char t2[100] = "init";
+    passwd(t0);
+    passwd(t1);
+    passwd(t2);
+    
+    return 0;
+}
+\end{lstlisting}
 
 Compile with afl-gcc: \\
 \verb|$ afl-gcc -o scan_fuzz -I. scan.c -lm| \\

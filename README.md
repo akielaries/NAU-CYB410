@@ -23,3 +23,4 @@ a strong grasp on the topics taught I had spend some additional freetime prettyi
 
 1) [Zeus](https://github.com/akielaries/CYB410-secure-software/blob/main/assignment-1/reports/assignment-1.pdf)
 2) [Mirai](https://github.com/akielaries/CYB410-secure-software/blob/main/assignment-2/reports/assignment2.pdf)
+3) [Stuxnet](https://github.com/akielaries/CYB410-secure-software/blob/main/assignment-3/reports/assignment3.pdf)

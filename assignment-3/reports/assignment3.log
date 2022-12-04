@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2022.11.13)  20 NOV 2022 23:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2022.11.13)  4 DEC 2022 13:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -440,17 +440,15 @@ Package hyperref Info: Link coloring OFF on input line 21.
 \openout3 = `assignment3.out'.
 
 \c@lstlisting=\count320
-<../../imgs//mirai-major-events-timeline.png, id=12, 1204.5pt x 679.53876pt>
-File: ../../imgs//mirai-major-events-timeline.png Graphic file (type png)
-<use ../../imgs//mirai-major-events-timeline.png>
-Package pdftex.def Info: ../../imgs//mirai-major-events-timeline.png  used on i
-nput line 55.
-(pdftex.def)             Requested size: 433.62pt x 244.63377pt.
+<../../imgs//stuxnet.jpg, id=12, 1204.5pt x 677.53125pt>
+File: ../../imgs//stuxnet.jpg Graphic file (type jpg)
+<use ../../imgs//stuxnet.jpg>
+Package pdftex.def Info: ../../imgs//stuxnet.jpg  used on input line 55.
+(pdftex.def)             Requested size: 433.62pt x 243.91106pt.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <../../imgs//mirai-major-ev
-ents-timeline.png>]
-<../../imgs//equation_group_family.jpg, id=25, 772.8875pt x 770.88pt>
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <../../imgs//stuxnet.jpg>]
+<../../imgs//equation_group_family.jpg, id=23, 772.8875pt x 770.88pt>
 File: ../../imgs//equation_group_family.jpg Graphic file (type jpg)
 <use ../../imgs//equation_group_family.jpg>
 Package pdftex.def Info: ../../imgs//equation_group_family.jpg  used on input l
@@ -461,8 +459,8 @@ Package rerunfilecheck Info: File `assignment3.out' has not changed.
 (rerunfilecheck)             Checksum: 7AFD02E2D97EF5759FB77890270A4A9C;184.
  ) 
 Here is how much of TeX's memory you used:
- 11398 strings out of 476992
- 177258 string characters out of 5827262
+ 11397 strings out of 476992
+ 177074 string characters out of 5827262
  706687 words of memory out of 5000000
  32402 multiletter control sequences out of 15000+600000
  475730 words of font info for 50 fonts, out of 8000000 for 9000
@@ -473,10 +471,10 @@ r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on assignment3.pdf (3 pages, 227508 bytes).
+Output written on assignment3.pdf (3 pages, 726674 bytes).
 PDF statistics:
- 67 PDF objects out of 1000 (max. 8388607)
- 48 compressed objects within 1 object stream
+ 65 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
  12 named destinations out of 1000 (max. 500000)
  27 words of extra memory for PDF output out of 10000 (max. 10000000)
 

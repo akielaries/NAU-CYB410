@@ -14,6 +14,8 @@
 
 #include <stdint.h>
 
+#include "argv-fuzz-inl.h"
+
 using namespace std;
 
 static const char* HEADER = "ASCR";
@@ -564,6 +566,9 @@ public:
 
 int main(int argc, char** argv)
 {
+
+    AFL_INIT_SET0("oneway_AFL");
+
     try
     {
         if (argc >= 2 && argc <= 3 && string(argv[1]) == string("--genkey"))

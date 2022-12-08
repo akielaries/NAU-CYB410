@@ -10,9 +10,58 @@
 % pkg for links
 \usepackage{hyperref}
 % for codeblocks highlighting
+\usepackage{color}
+\usepackage{xcolor}
 \usepackage{listings}
-\lstset{language=C}
 
+% Solarized colour scheme for listings
+\definecolor{solarized@base03}{HTML}{002B36}
+\definecolor{solarized@base02}{HTML}{073642}
+\definecolor{solarized@base01}{HTML}{586e75}
+\definecolor{solarized@base00}{HTML}{657b83}
+\definecolor{solarized@base0}{HTML}{839496}
+\definecolor{solarized@base1}{HTML}{93a1a1}
+\definecolor{solarized@base2}{HTML}{EEE8D5}
+\definecolor{solarized@base3}{HTML}{FDF6E3}
+\definecolor{solarized@yellow}{HTML}{B58900}
+\definecolor{solarized@orange}{HTML}{CB4B16}
+\definecolor{solarized@red}{HTML}{DC322F}
+\definecolor{solarized@magenta}{HTML}{D33682}
+\definecolor{solarized@violet}{HTML}{6C71C4}
+\definecolor{solarized@blue}{HTML}{268BD2}
+\definecolor{solarized@cyan}{HTML}{2AA198}
+\definecolor{solarized@green}{HTML}{859900}
+\definecolor{solarized@orchid}{HTML}{483D8B}
+
+
+% Define C++ syntax highlighting colour scheme
+\definecolor{commentgreen}{RGB}{2,112,10}
+\definecolor{eminence}{RGB}{108,48,130}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{129,20,83}
+
+\lstset {
+    language=[GNU]C++,
+    frame=tb,
+    tabsize=4,
+    showstringspaces=false,
+    numbers=left,
+    upquote=true,
+    commentstyle=\color{commentgreen},
+    keywordstyle=\color{solarized@orchid},
+    identifierstyle=\color{solarized@blue},
+    stringstyle=\color{solarized@magenta},
+    basicstyle=\small\ttfamily, % basic font setting
+    emph={int,char,double,float,unsigned,void,bool},
+    emphstyle={\color{blue}},
+    escapechar=\&,
+    % keyword highlighting
+    classoffset=1, % starting new class
+    otherkeywords={TEST, EXPECT_EQ,>,<,.,;,-,!,=,~, typename},
+    morekeywords={TEST, EXPECT_EQ,>,<,.,;,-,!,=,~, typename},
+    keywordstyle=\color{frenchplum},
+    classoffset=0
+}
 
 \makeatletter
 \patchcmd{\raggedright}{\parindent\z@}{}{}{}
@@ -126,7 +175,7 @@ exploited by means of an air gap, meaning the bot's initial attack vector
 is physical. At a glance, all aspects of the CIA triad were violated as 
 the confidentiality of the attack was not contained per leaked documents 
 along with whistleblowing (allegedly), integrity was not upheld by the nation
-or said party involved, and availability was not present. 
+or said party involved, and availability was not present.
 
 
 The repository that this report will be base the code off of is located 
@@ -136,31 +185,58 @@ here: https://github.com/research-virus/stuxnet
 
 %\newpage
 
-\section{Source Code}
+\section{Fuzzing}
 The stuxnet virus makes use of infecting RPC (Remote procedure call) servers based on 
 the different type of call types that are made. The servers are split into two 
 components one managing local RPC calls and the other for managing remote calls. 
-The calls that were sniffed were services.exe for local calls, 
+The calls that were sniffed were services.exe for local calls.
+
+The bot makes use of exploited Windows systems on a very low level allowing the attacker
+to maniuplate portions of the Operating System perhaps not meant to be dealt with by 
+regular users. Stuxnet makes effective use of exploiting at the time Windows inseucre 
+digital certificate services. Stuxnet makes use of exploiting asynchronous encryption
+methods utilized by said certificate services, this allows Stuxnet to infect and spread by
+spawning processes different threads. To look into this I had found an example of simple
+asynchronous encryption in C++, allowing for decription from the CLI as well. See here:
+https://github.com/galets/oneway-cpp
+
+When Fuzzing the program I had attempted for many hours to install deepstate produced
+by trailofbits, but failed in every way including within a Docker container. To make use
+of fuzzing the \verb|async_encrypt.cpp| file I made use of AFL and AFL++. Using AFL++ and getting 
+it installed was quite the process but since my reinterpretation of an asynchronous 
+encryption algorithm accepted argc and argv paramaters I had to do some research on how
+this could be done. I went ahead and found a header file I could easily use along with
+some macros to initialize argv fuzzing with the default argv[0] set to the compiled binary
+itself. 
  
+Fuzzing the code itself took some work. I had created a Makefile for easier compiliation
+with the following contents:
+\begin{verbatim}
+oneway-AFL-COMP: 
+	AFL_SKIP_CPUFREQ=1 AFL_HARDEN=1 afl-g++ -o \
+	oneway_AFL oneway.cpp -lssl -lcrypto
+
+oneway-AFL-RUN:
+	AFL_SKIP_CPUFREQ=1 afl-fuzz -i in -o out ./oneway_AFL
+\end{verbatim}
+the \verb|AFL_SKIP_CPUFREQ| initializer skips the error that may pop up of innefecient 
+CPU cycles. I chose to ignore this since the program I am testing is not large and I do
+indeed have suffecient CPU cycles. Compiling the code with afl-g++ allows for us to 
+compile the code with instrumentation to be recognized by the fuzzer itself. To fuzz the
+code itself I had created an \verb|in/| directory with test inputs to fuzz against (mainly
+just test cases of generating hashes in a asynchronous way) and generates an \verb|out|
+directory with result of our fuzzer. This can be ran indefinitely and we can monitor the 
+result as it goes. Here is an example of AFL++ running for about 25 minutes with the 
+following results:
+
+{\includegraphics[width=1\textwidth]{AFL_test0.jpg}}
+
+A number of 1 unique timeout was produced really being the only significant result. Perhaps
+if I refactored the code (if it wasn't over 600 lines) with more time I could've produced
+more interesting result but programs that make use of properly implemented CLI arguments
+and flags are hard to fuzz against. 
 
 %\newpage
-
-\section*{Scale}
-
-
-\section*{Execution}
-
-
-\section*{Reproducible Example}
-
-
-\section*{Static Analysis/Debugging}
-
-
-\section*{Fuzzing with AFL}
-
-
-\section*{Final Notes}
 
 \end{flushleft}
 \end{sloppypar}

@@ -1,5 +1,5 @@
 # Overview
-Repository for CYB 410 Secure Software taught by Professor Sarah Assiri, taking a
+Repository for CYB 410 Secure Software taught by Professor Sarah Assiri FALL2022, taking a
 look at many topics related to security. This repo mostly serves as a workspace
 to display my reports on malware for the class that I spent some free time on. 
 This class dives into topics related to: 
